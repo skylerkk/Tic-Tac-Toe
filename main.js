@@ -248,7 +248,7 @@ function checkWinner() {
 
     //else if winner = player1 or winner = player2 then return the winner
     else if (winner === player1 || winner === player2) {
-        winner;
+        winner = winner;
     }
 
     //else winner is nothing
@@ -384,24 +384,25 @@ function position(posX, posY) {
 //handles all player turn functions
 function playerTurn() {
 
-    //Swap current players background and text color if it is their turn or not
-    if (turn === player1) {
-        xWin.setAttribute('class', 'text-left col-6');
-        oWin.setAttribute('class', 'text-success bg-secondary text-right col-6');
-    }
-    else {
-        oWin.setAttribute('class', 'text-right col-6');
-        xWin.setAttribute('class', 'text-success bg-secondary text-left col-6');
-    }
-
     //if mouse was clicked
     if (mouseClicked === true) {
 
         //set postionX and positionY to the boardSpace at each x or y axis
         let positionX = boardSpace(0);
         let positionY = boardSpace(1);
+
         //if the board position is empty
         if (board[positionX][positionY] === "") {
+
+            //Swap current players background and text color if it is their turn or not
+            if (turn === player1) {
+                xWin.setAttribute('class', 'text-left col-6');
+                oWin.setAttribute('class', 'text-success bg-secondary text-right col-6');
+            }
+            else {
+                oWin.setAttribute('class', 'text-right col-6');
+                xWin.setAttribute('class', 'text-success bg-secondary text-left col-6');
+            }
 
             //hide the text element
             para.style.display = "none";
