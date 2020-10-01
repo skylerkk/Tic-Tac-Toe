@@ -1,15 +1,17 @@
 //All elements created with text and classes appended to them
 const div = document.getElementById('holder');
 const div2 = document.createElement('div');
+const div3 = document.createElement('div2');
 const title = document.createElement('h1');
 var titleText = document.createTextNode("Tic Tac Toe");
 title.appendChild(titleText);
 title.setAttribute('class', 'text-center py-5');
 const text = document.createElement('h1');
+div3.setAttribute('class', 'row');
 const xWin = document.createElement('h4');
-xWin.setAttribute('class', 'float-left');
+xWin.setAttribute('class', 'text-left col-6');
 const oWin = document.createElement('h4');
-oWin.setAttribute('class', 'float-right');
+oWin.setAttribute('class', 'text-right col-6');
 const canvas = document.createElement('canvas');
 canvas.setAttribute('class', 'mx-auto py-5');
 const ctx = canvas.getContext('2d');
@@ -28,8 +30,9 @@ div2.setAttribute('class', 'd-flex justify-content-center py-5');
 
 //appending to the div on html page
 div.appendChild(title);
-div.appendChild(xWin);
-div.appendChild(oWin);
+div.appendChild(div3);
+div3.appendChild(xWin);
+div3.appendChild(oWin);
 div.appendChild(canvas);
 div.appendChild(para);
 div.appendChild(div2);
@@ -77,18 +80,17 @@ function start() {
 
         //Set the names of the players if they don't put anything deafult to player 1 and 2
         player1Name = window.prompt("Enter player 1's name: ");
-        if(player1Name === null || player1Name === ''){
+        if (player1Name === null || player1Name === '') {
             player1Name = "Player 1";
         }
         player2Name = window.prompt("Enter player 2's name: ");
-        if(player2Name === null || player2Name === ''){
+        if (player2Name === null || player2Name === '') {
             player2Name = "Player 2";
         }
         var xWinText = document.createTextNode(`${player1Name}'s Wins: 0`);
         xWin.appendChild(xWinText);
         var oWinText = document.createTextNode(`${player2Name}'s Wins: 0`);
         oWin.appendChild(oWinText);
-
 
         //call restart
         restart();
@@ -104,6 +106,7 @@ function start() {
 //function to restart
 function restart() {
 
+
     //if state is equal to 2
     if (state === 2) {
 
@@ -115,9 +118,18 @@ function restart() {
     }
     console.log(board);
     //set turn to player 1, winner to null, and open's length to 0
-    turn = player1;
     winner = null;
     open.length = 0;
+
+    //Set color to background for starting player to show they are going
+    if (turn === player1) {
+        xWin.setAttribute('class', 'text-success bg-secondary text-left col-6');
+        oWin.setAttribute('class', 'text-right col-6');
+    }
+    else if (turn === player2) {
+        oWin.setAttribute('class', 'text-success bg-secondary text-right col-6');
+        xWin.setAttribute('class', 'text-left col-6');
+    }
 
     //push to open the values [i, j]
     for (let i = 0; i < 3; i++) {
@@ -167,27 +179,35 @@ function checkerFunc(a, b, c) {
 //winScreen function checks if player1 won, player2 won, or if it was a tie. Then display teh correct results based on that.
 function winScreen() {
 
-    //if winner is equal to player 1 then add to player 1's wins call swapDisplay then change the text to match player 1 and set game state to 2
+    //if winner is equal to player 1 then add to player 1's wins call swapDisplay then change the text to match player 1 and set game state to 2 also sets next games starting player to player2
     if (winner === player1) {
         xWins++;
         swapDisplay();
+        xWin.setAttribute('class', 'text-left col-6');
+        oWin.setAttribute('class', 'text-right col-6');
         para.innerHTML = `${player1Name} wins they have ${xWins} total wins now!`;
         xWin.innerHTML = `${player1Name}'s Wins: ${xWins}`
+        turn = player1;
         state = 2;
     }
 
-    //else if the winner is equal to player 2 do the same as above besides changing player1 to player2
+    //else if the winner is equal to player 2 do the same as above besides changing player1 to player2 also sets next games starting player to player2
     else if (winner === player2) {
         oWins++;
         swapDisplay();
+        xWin.setAttribute('class', 'text-left col-6');
+        oWin.setAttribute('class', 'text-right col-6');
         para.innerHTML = `${player2Name} wins they have ${oWins} total wins now!`;
         oWin.innerHTML = `${player2Name}'s Wins: ${oWins}`;
+        turn = player2;
         state = 2;
     }
 
     //finally if the two above are false then just say it is a tie.
     else {
         swapDisplay();
+        xWin.setAttribute('class', 'text-left col-6');
+        oWin.setAttribute('class', 'text-right col-6');
         para.innerHTML = `No player won`;
         state = 2;
     }
@@ -363,6 +383,16 @@ function position(posX, posY) {
 
 //handles all player turn functions
 function playerTurn() {
+
+    //Swap current players background and text color if it is their turn or not
+    if (turn === player1) {
+        xWin.setAttribute('class', 'text-left col-6');
+        oWin.setAttribute('class', 'text-success bg-secondary text-right col-6');
+    }
+    else {
+        oWin.setAttribute('class', 'text-right col-6');
+        xWin.setAttribute('class', 'text-success bg-secondary text-left col-6');
+    }
 
     //if mouse was clicked
     if (mouseClicked === true) {
