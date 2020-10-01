@@ -4,16 +4,12 @@ const div2 = document.createElement('div');
 const title = document.createElement('h1');
 var titleText = document.createTextNode("Tic Tac Toe");
 title.appendChild(titleText);
-title.setAttribute('class','text-center py-5');
+title.setAttribute('class', 'text-center py-5');
 const text = document.createElement('h1');
 const xWin = document.createElement('h4');
-xWin.setAttribute('class','float-left');
-var xWinText = document.createTextNode("X's Wins: 0");
-xWin.appendChild(xWinText);
+xWin.setAttribute('class', 'float-left');
 const oWin = document.createElement('h4');
-oWin.setAttribute('class','float-right');
-var oWinText = document.createTextNode("O's Wins: 0");
-oWin.appendChild(oWinText);
+oWin.setAttribute('class', 'float-right');
 const canvas = document.createElement('canvas');
 canvas.setAttribute('class', 'mx-auto py-5');
 const ctx = canvas.getContext('2d');
@@ -27,8 +23,8 @@ para.setAttribute('class', 'text-center py-5');
 const btn = document.createElement('button');
 var btnText = document.createTextNode('Start?');
 btn.appendChild(btnText);
-btn.setAttribute('class','btn btn-lg btn-secondary text-center');
-div2.setAttribute('class','d-flex justify-content-center py-5');
+btn.setAttribute('class', 'btn btn-lg btn-secondary text-center');
+div2.setAttribute('class', 'd-flex justify-content-center py-5');
 
 //appending to the div on html page
 div.appendChild(title);
@@ -55,8 +51,11 @@ const boardMaxWidth = 256;
 
 //make player 1 equal to X and 2 to Y then define tie. If it is first game make turn equal to player 1
 let player1 = 'X';
+let player1Name = '';
 let player2 = 'O';
+let player2Name = '';
 let tie = "tie";
+
 let turn = player1;
 
 //makes open array mouseClick array and mouse click set to false
@@ -75,6 +74,21 @@ function start() {
 
     //if the state is equal to 0
     if (state === 0) {
+
+        //Set the names of the players if they don't put anything deafult to player 1 and 2
+        player1Name = window.prompt("Enter player 1's name: ");
+        if(player1Name === null || player1Name === ''){
+            player1Name = "Player 1";
+        }
+        player2Name = window.prompt("Enter player 2's name: ");
+        if(player2Name === null || player2Name === ''){
+            player2Name = "Player 2";
+        }
+        var xWinText = document.createTextNode(`${player1Name}'s Wins: 0`);
+        xWin.appendChild(xWinText);
+        var oWinText = document.createTextNode(`${player2Name}'s Wins: 0`);
+        oWin.appendChild(oWinText);
+
 
         //call restart
         restart();
@@ -157,8 +171,8 @@ function winScreen() {
     if (winner === player1) {
         xWins++;
         swapDisplay();
-        para.innerHTML = `Player 1 wins they have ${xWins} total wins now!`;
-        xWin.innerHTML = `X's Wins: ${xWins}`
+        para.innerHTML = `${player1Name} wins they have ${xWins} total wins now!`;
+        xWin.innerHTML = `${player1Name}'s Wins: ${xWins}`
         state = 2;
     }
 
@@ -166,8 +180,8 @@ function winScreen() {
     else if (winner === player2) {
         oWins++;
         swapDisplay();
-        para.innerHTML = `Player 2 wins they have ${oWins} total wins now!`;
-        oWin.innerHTML = `O's Wins: ${oWins}`;
+        para.innerHTML = `${player2Name} wins they have ${oWins} total wins now!`;
+        oWin.innerHTML = `${player2Name}'s Wins: ${oWins}`;
         state = 2;
     }
 
@@ -431,7 +445,7 @@ function gameState() {
 
         //check for a winner after each player turn
         checkWinner();
-        
+
         //if the winner exist then put the win screen up
         if (winner !== null) {
             winScreen();
@@ -440,3 +454,4 @@ function gameState() {
 }
 
 btn.addEventListener("click", start);
+
