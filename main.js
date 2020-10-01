@@ -116,19 +116,19 @@ function restart() {
         //set canvas style to block
         canvas.style.display = "block";
     }
-    console.log(board);
+
     //set turn to player 1, winner to null, and open's length to 0
     winner = null;
     open.length = 0;
 
     //Set color to background for starting player to show they are going
     if (turn === player1) {
-        xWin.setAttribute('class', 'text-success bg-secondary text-left col-6');
-        oWin.setAttribute('class', 'text-right col-6');
+        xWin.setAttribute('class', 'text-success bg-secondary text-left col-3');
+        oWin.setAttribute('class', 'text-right col-3 offset-6');
     }
     else if (turn === player2) {
-        oWin.setAttribute('class', 'text-success bg-secondary text-right col-6');
-        xWin.setAttribute('class', 'text-left col-6');
+        oWin.setAttribute('class', 'text-success bg-secondary text-right col-3 offset-6');
+        xWin.setAttribute('class', 'text-left col-3');
     }
 
     //push to open the values [i, j]
@@ -183,8 +183,8 @@ function winScreen() {
     if (winner === player1) {
         xWins++;
         swapDisplay();
-        xWin.setAttribute('class', 'text-left col-6');
-        oWin.setAttribute('class', 'text-right col-6');
+        xWin.setAttribute('class', 'text-left col-3');
+        oWin.setAttribute('class', 'text-right col-3 offset-6');
         para.innerHTML = `${player1Name} wins they have ${xWins} total wins now!`;
         xWin.innerHTML = `${player1Name}'s Wins: ${xWins}`
         turn = player1;
@@ -195,8 +195,8 @@ function winScreen() {
     else if (winner === player2) {
         oWins++;
         swapDisplay();
-        xWin.setAttribute('class', 'text-left col-6');
-        oWin.setAttribute('class', 'text-right col-6');
+        xWin.setAttribute('class', 'text-left col-3');
+        oWin.setAttribute('class', 'text-right col-3 offset-6');
         para.innerHTML = `${player2Name} wins they have ${oWins} total wins now!`;
         oWin.innerHTML = `${player2Name}'s Wins: ${oWins}`;
         turn = player2;
@@ -206,8 +206,8 @@ function winScreen() {
     //finally if the two above are false then just say it is a tie.
     else {
         swapDisplay();
-        xWin.setAttribute('class', 'text-left col-6');
-        oWin.setAttribute('class', 'text-right col-6');
+        xWin.setAttribute('class', 'text-left col-3');
+        oWin.setAttribute('class', 'text-right col-3 offset-6');
         para.innerHTML = `No player won`;
         state = 2;
     }
@@ -396,12 +396,12 @@ function playerTurn() {
 
             //Swap current players background and text color if it is their turn or not
             if (turn === player1) {
-                xWin.setAttribute('class', 'text-left col-6');
-                oWin.setAttribute('class', 'text-success bg-secondary text-right col-6');
+                xWin.setAttribute('class', 'text-left col-3');
+                oWin.setAttribute('class', 'text-success bg-secondary text-right col-3 offset-6');
             }
             else {
-                oWin.setAttribute('class', 'text-right col-6');
-                xWin.setAttribute('class', 'text-success bg-secondary text-left col-6');
+                oWin.setAttribute('class', 'text-right col-3 offset-6');
+                xWin.setAttribute('class', 'text-success bg-secondary text-left col-3');
             }
 
             //hide the text element
@@ -425,7 +425,6 @@ function playerTurn() {
         else {
             para.innerHTML = "Please pick a valid move";
             para.style.display = "block";
-            console.log('valid move please');
         }
     }
     //if mouseClicked isn't true
@@ -471,7 +470,6 @@ function gameState() {
         //if the winner is null then go through the player turn
         if (winner === null) {
             playerTurn();
-            console.log(board);
         }
 
         //check for a winner after each player turn
