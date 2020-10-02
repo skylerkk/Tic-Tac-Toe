@@ -63,7 +63,6 @@ let turn = player1;
 //makes open array mouseClick array and mouse click set to false
 var open = [];
 var mouseClick = [];
-var mouseClicked = false;
 
 //state, xWins, oWins equalt to 0 and winner equal to null
 var state = 0;
@@ -413,10 +412,9 @@ function aiTurn() {
     //call checkWinner
     checkWinner();
 
-    //set State to 1 and mouseClicked to true
+    //set State to 1 and changs turn to player1
     state = 1;
     turn = player1;
-    mouseClicked = false;
 
     //if winner is not null display winScreen
     if (winner !== null) {
@@ -459,12 +457,7 @@ function playerTurn() {
 
         //if turn is player 1 then set turn to player 2 else set turn to player 1
         turn = AI;
-        mouseClicked = false;
     }
-
-    //if the board position wasn't valid tell the player 
-    //if mouseClicked isn't true
-
 
     checkWinner();
 
@@ -504,8 +497,11 @@ function gameState() {
 
         //mouseClick is put into a array where the first element is x axis and second is y. This should range from 500/500
         mouseClick = [Math.floor(mousePos.x), Math.floor(mousePos.y)];
-        if (board[boardSpace(0)][boardSpace(1)] === '' && board[boardSpace(0)][boardSpace(1)] !== 'O') {
-            //if the winner is null then go through the player turn
+
+        //if the board space has nothing in it then you can take a player turn
+        if (board[boardSpace(0)][boardSpace(1)] === '') {
+
+            //if the winner is null then go through the player turn then if the winner is still null it will take aiTurn
             if (winner === null) {
                 if (turn === player1) {
                     playerTurn();
@@ -515,15 +511,14 @@ function gameState() {
                 }
             }
         }
+
+        //if the board space is taken then print this
         else {
             para.innerHTML = "Please pick a valid move";
             para.style.display = "block";
 
         }
 
-        //check for a winner after each player turn
-
-        //if the winner exist then put the win screen up
     });
 }
 
