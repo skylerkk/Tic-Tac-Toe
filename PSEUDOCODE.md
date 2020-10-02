@@ -122,3 +122,12 @@ function gameState()
     //if winner is not null then call playerTurn() 
     //checkWinner after
     //if there is a winner then call the winnerScreen()
+
+
+## AI START
+
+Basic AI makes moves based upon the next open space
+AI has a 5 in every move possible for every iteration of the game
+when the AI loses subtract a 1 for that move or AI wins add a 1 for that move and 0 if it ties
+when the AI loses all numbers for that move the AI cannot move there anymore
+then after so many iterations it will have the best moves possible

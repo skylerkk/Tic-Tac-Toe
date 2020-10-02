@@ -13,7 +13,7 @@ xWin.setAttribute('class', 'text-left col-6');
 const oWin = document.createElement('h4');
 oWin.setAttribute('class', 'text-right col-6');
 const canvas = document.createElement('canvas');
-canvas.setAttribute('class', 'mx-auto py-5');
+canvas.setAttribute('class', 'mx-auto pt-5 pb-2');
 const ctx = canvas.getContext('2d');
 const width = canvas.width = 400;
 const height = canvas.height = 400;
@@ -26,7 +26,7 @@ const btn = document.createElement('button');
 var btnText = document.createTextNode('Start?');
 btn.appendChild(btnText);
 btn.setAttribute('class', 'btn btn-lg btn-secondary text-center');
-div2.setAttribute('class', 'd-flex justify-content-center py-5');
+div2.setAttribute('class', 'd-flex justify-content-center py-2');
 
 //appending to the div on html page
 div.appendChild(title);
@@ -55,8 +55,7 @@ const boardMaxWidth = 256;
 //make player 1 equal to X and 2 to Y then define tie. If it is first game make turn equal to player 1
 let player1 = 'X';
 let player1Name = '';
-let player2 = 'O';
-let player2Name = '';
+let AI = 'O';
 let tie = "tie";
 
 let turn = player1;
@@ -83,13 +82,9 @@ function start() {
         if (player1Name === null || player1Name === '') {
             player1Name = "Player 1";
         }
-        player2Name = window.prompt("Enter player 2's name: ");
-        if (player2Name === null || player2Name === '') {
-            player2Name = "Player 2";
-        }
         var xWinText = document.createTextNode(`${player1Name}'s Wins: 0`);
         xWin.appendChild(xWinText);
-        var oWinText = document.createTextNode(`${player2Name}'s Wins: 0`);
+        var oWinText = document.createTextNode(`AI's Wins: 0`);
         oWin.appendChild(oWinText);
 
         //call restart
@@ -106,30 +101,34 @@ function start() {
 //function to restart
 function restart() {
 
+    //add event listener on the button to just restart
+    btn.addEventListener("click", restart);
 
     //if state is equal to 2
     if (state === 2) {
 
         //call swap display
         swapDisplay();
+        state = 1;
 
         //set canvas style to block
         canvas.style.display = "block";
     }
+
 
     //set turn to player 1, winner to null, and open's length to 0
     winner = null;
     open.length = 0;
 
     //Set color to background for starting player to show they are going
-    if (turn === player1) {
-        xWin.setAttribute('class', 'text-success bg-secondary text-left col-3');
-        oWin.setAttribute('class', 'text-right col-3 offset-6');
-    }
-    else if (turn === player2) {
-        oWin.setAttribute('class', 'text-success bg-secondary text-right col-3 offset-6');
-        xWin.setAttribute('class', 'text-left col-3');
-    }
+    // if (turn === player1) {
+    //     xWin.setAttribute('class', 'text-success bg-secondary text-left col-3');
+    //     oWin.setAttribute('class', 'text-right col-3 offset-6');
+    // }
+    // else if (turn === AI) {
+    //     oWin.setAttribute('class', 'text-success bg-secondary text-right col-3 offset-6');
+    //     xWin.setAttribute('class', 'text-left col-3');
+    // }
 
     //push to open the values [i, j]
     for (let i = 0; i < 3; i++) {
@@ -149,6 +148,10 @@ function restart() {
     ctx.clearRect(0, 0, 400, 400);
     //draw
     draw();
+
+    if (turn === AI) {
+        aiTurn();
+    }
 }
 
 //swapDisplay function
@@ -157,13 +160,11 @@ function swapDisplay() {
     //if the header below the canvas is not showing then stop displaying it and display the canvas
     if (para.style.display !== 'none') {
         para.style.display = 'none';
-        canvas.style.display = 'block';
     }
 
     //else do the opposite
     else {
         para.style.display = 'block';
-        canvas.style.display = 'none';
     }
 }
 
@@ -183,32 +184,32 @@ function winScreen() {
     if (winner === player1) {
         xWins++;
         swapDisplay();
-        xWin.setAttribute('class', 'text-left col-3');
-        oWin.setAttribute('class', 'text-right col-3 offset-6');
-        para.innerHTML = `${player1Name} wins they have ${xWins} total wins now!`;
+        // xWin.setAttribute('class', 'text-left col-3');
+        // oWin.setAttribute('class', 'text-right col-3 offset-6');
+        para.innerHTML = `${player1Name} wins they have ${xWins} total wins now! <hr> Won't be so easy next time!`;
         xWin.innerHTML = `${player1Name}'s Wins: ${xWins}`
         turn = player1;
         state = 2;
     }
 
-    //else if the winner is equal to player 2 do the same as above besides changing player1 to player2 also sets next games starting player to player2
-    else if (winner === player2) {
+    //else if the winner is equal to AI do the same as above besides changing player1 to AI also sets next games starting player to AI
+    else if (winner === AI) {
         oWins++;
         swapDisplay();
-        xWin.setAttribute('class', 'text-left col-3');
-        oWin.setAttribute('class', 'text-right col-3 offset-6');
-        para.innerHTML = `${player2Name} wins they have ${oWins} total wins now!`;
-        oWin.innerHTML = `${player2Name}'s Wins: ${oWins}`;
-        turn = player2;
+        // xWin.setAttribute('class', 'text-left col-3');
+        // oWin.setAttribute('class', 'text-right col-3 offset-6');
+        para.innerHTML = `AI wins they have ${oWins} total wins now! <hr> Can't belive you lost!`;
+        oWin.innerHTML = `AI's Wins: ${oWins}`;
+        turn = AI;
         state = 2;
     }
 
     //finally if the two above are false then just say it is a tie.
     else {
         swapDisplay();
-        xWin.setAttribute('class', 'text-left col-3');
-        oWin.setAttribute('class', 'text-right col-3 offset-6');
-        para.innerHTML = `No player won`;
+        // xWin.setAttribute('class', 'text-left col-3');
+        // oWin.setAttribute('class', 'text-right col-3 offset-6');
+        para.innerHTML = `<b>Tie!</b> <hr> Congratulations you were able to tie!`;
         state = 2;
     }
 }
@@ -247,7 +248,7 @@ function checkWinner() {
     }
 
     //else if winner = player1 or winner = player2 then return the winner
-    else if (winner === player1 || winner === player2) {
+    else if (winner === player1 || winner === AI) {
         winner = winner;
     }
 
@@ -355,7 +356,7 @@ function draw() {
             }
 
             //else if the spot we are at is player2 then draw an O there
-            else if (spot === player2) {
+            else if (spot === AI) {
                 drawO(x, y, w, h);
             }
         }
@@ -381,6 +382,47 @@ function position(posX, posY) {
     return -1;
 }
 
+function aiTurn() {
+    //set boolean for if the AI made a move
+    let moved = false;
+
+    //loop through each element of the board
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+
+            //the space is empty
+            if (board[i][j] === '') {
+
+                //set the board at this position equal to the turn, set moved to true, and change player turn
+                board[i][j] = turn;
+                moved = true;
+                turn = player1;
+
+                //remove the space from open spaces
+                open.splice(position(i, j), 1);
+
+                //draw board
+                draw();
+                //break
+                break;
+            }
+        }
+        //if moved was true break
+        if (moved) break;
+    }
+
+    //call checkWinner
+    checkWinner();
+
+    //set State to 1
+    state = 1;
+
+    //if winner is not null display winScreen
+    if (winner !== null) {
+        winScreen();
+    }
+}
+
 //handles all player turn functions
 function playerTurn() {
 
@@ -395,14 +437,14 @@ function playerTurn() {
         if (board[positionX][positionY] === "") {
 
             //Swap current players background and text color if it is their turn or not
-            if (turn === player1) {
-                xWin.setAttribute('class', 'text-left col-3');
-                oWin.setAttribute('class', 'text-success bg-secondary text-right col-3 offset-6');
-            }
-            else {
-                oWin.setAttribute('class', 'text-right col-3 offset-6');
-                xWin.setAttribute('class', 'text-success bg-secondary text-left col-3');
-            }
+            // if (turn === player1) {
+            //     xWin.setAttribute('class', 'text-left col-3');
+            //     oWin.setAttribute('class', 'text-success bg-secondary text-right col-3 offset-6');
+            // }
+            // else {
+            //     oWin.setAttribute('class', 'text-right col-3 offset-6');
+            //     xWin.setAttribute('class', 'text-success bg-secondary text-left col-3');
+            // }
 
             //hide the text element
             para.style.display = "none";
@@ -416,8 +458,7 @@ function playerTurn() {
             draw();
 
             //if turn is player 1 then set turn to player 2 else set turn to player 1
-            if (turn === player1) turn = player2;
-            else turn = player1;
+            turn = AI;
 
         }
 
@@ -430,6 +471,14 @@ function playerTurn() {
     //if mouseClicked isn't true
     else {
         mouseClicked = false;
+    }
+
+    checkWinner();
+
+    state = 1;
+
+    if (winner !== null) {
+        winScreen();
     }
 }
 
@@ -454,9 +503,6 @@ function gameState() {
     canvas.style.display = 'block';
     btn.innerHTML = 'Restart?';
 
-    //add event listener on the button to just restart
-    btn.addEventListener("click", restart);
-
     //add event listener to canvas to get the mouse input
     canvas.addEventListener('mouseup', function (evt) {
 
@@ -469,16 +515,18 @@ function gameState() {
 
         //if the winner is null then go through the player turn
         if (winner === null) {
-            playerTurn();
+            if (turn === player1) {
+                playerTurn();
+                if (winner === null) {
+                    aiTurn();
+                }
+            }
+
         }
 
         //check for a winner after each player turn
-        checkWinner();
 
         //if the winner exist then put the win screen up
-        if (winner !== null) {
-            winScreen();
-        }
     });
 }
 
