@@ -94,6 +94,7 @@ function start() {
 
         //call gameState
         gameState();
+
     }
 }
 
@@ -143,6 +144,8 @@ function restart() {
         }
     }
 
+     //add canvas event listenr for mouse up
+    canvas.addEventListener('mouseup',eventListner);
     //clear all drawings
     ctx.clearRect(0, 0, 400, 400);
     //draw
@@ -151,6 +154,7 @@ function restart() {
     if (turn === AI) {
         aiTurn();
     }
+
 }
 
 //swapDisplay function
@@ -187,6 +191,9 @@ function winScreen() {
         // oWin.setAttribute('class', 'text-right col-3 offset-6');
         para.innerHTML = `${player1Name} wins they have ${xWins} total wins now! <hr> Won't be so easy next time!`;
         xWin.innerHTML = `${player1Name}'s Wins: ${xWins}`
+
+        //removes the canvas event listener so user can't click anymore
+        canvas.removeEventListener('mouseup',  eventListner);
         turn = player1;
         state = 2;
     }
@@ -199,6 +206,9 @@ function winScreen() {
         // oWin.setAttribute('class', 'text-right col-3 offset-6');
         para.innerHTML = `AI wins they have ${oWins} total wins now! <hr> Can't belive you lost!`;
         oWin.innerHTML = `AI's Wins: ${oWins}`;
+        
+         //removes the canvas event listener so user can't click anymore
+        canvas.removeEventListener('mouseup',  eventListner);
         turn = AI;
         state = 2;
     }
@@ -209,6 +219,9 @@ function winScreen() {
         // xWin.setAttribute('class', 'text-left col-3');
         // oWin.setAttribute('class', 'text-right col-3 offset-6');
         para.innerHTML = `<b>Tie!</b> <hr> Congratulations you were able to tie!`;
+        
+        //removes the canvas event listener so user can't click anymore
+        canvas.removeEventListener('mouseup',  eventListner);
         state = 2;
     }
 }
@@ -489,8 +502,14 @@ function gameState() {
     canvas.style.display = 'block';
     btn.innerHTML = 'Restart?';
 
+    //add canvas event listenr for mouse up
+    canvas.addEventListener('mouseup',eventListner);
+}
+
+//function for the canvas event listener
+function eventListner(evt) {
     //add event listener to canvas to get the mouse input
-    canvas.addEventListener('mouseup', function (evt) {
+ 
 
         //gets teh mouse position in the canvas in relation to the event
         var mousePos = getMousePos(canvas, evt);
@@ -519,7 +538,7 @@ function gameState() {
 
         }
 
-    });
+    
 }
 
 btn.addEventListener("click", start);
