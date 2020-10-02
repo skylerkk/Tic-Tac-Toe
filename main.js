@@ -396,7 +396,6 @@ function aiTurn() {
                 //set the board at this position equal to the turn, set moved to true, and change player turn
                 board[i][j] = turn;
                 moved = true;
-                turn = player1;
 
                 //remove the space from open spaces
                 open.splice(position(i, j), 1);
@@ -414,8 +413,10 @@ function aiTurn() {
     //call checkWinner
     checkWinner();
 
-    //set State to 1
+    //set State to 1 and mouseClicked to true
     state = 1;
+    turn = player1;
+    mouseClicked = false;
 
     //if winner is not null display winScreen
     if (winner !== null) {
@@ -427,51 +428,43 @@ function aiTurn() {
 function playerTurn() {
 
     //if mouse was clicked
-    if (mouseClicked === true) {
 
-        //set postionX and positionY to the boardSpace at each x or y axis
-        let positionX = boardSpace(0);
-        let positionY = boardSpace(1);
+    //set postionX and positionY to the boardSpace at each x or y axis
+    let positionX = boardSpace(0);
+    let positionY = boardSpace(1);
 
-        //if the board position is empty
-        if (board[positionX][positionY] === "") {
+    //if the board position is empty
+    if (board[positionX][positionY] === "") {
 
-            //Swap current players background and text color if it is their turn or not
-            // if (turn === player1) {
-            //     xWin.setAttribute('class', 'text-left col-3');
-            //     oWin.setAttribute('class', 'text-success bg-secondary text-right col-3 offset-6');
-            // }
-            // else {
-            //     oWin.setAttribute('class', 'text-right col-3 offset-6');
-            //     xWin.setAttribute('class', 'text-success bg-secondary text-left col-3');
-            // }
+        //Swap current players background and text color if it is their turn or not
+        // if (turn === player1) {
+        //     xWin.setAttribute('class', 'text-left col-3');
+        //     oWin.setAttribute('class', 'text-success bg-secondary text-right col-3 offset-6');
+        // }
+        // else {
+        //     oWin.setAttribute('class', 'text-right col-3 offset-6');
+        //     xWin.setAttribute('class', 'text-success bg-secondary text-left col-3');
+        // }
 
-            //hide the text element
-            para.style.display = "none";
+        //hide the text element
+        para.style.display = "none";
 
-            //set that spot to the X or O based upon the current player turn
-            board[positionX][positionY] = turn;
-            //splice that out of open array using postion() function
-            open.splice(position(positionX, positionY), 1);
+        //set that spot to the X or O based upon the current player turn
+        board[positionX][positionY] = turn;
+        //splice that out of open array using postion() function
+        open.splice(position(positionX, positionY), 1);
 
-            //call draw
-            draw();
+        //call draw
+        draw();
 
-            //if turn is player 1 then set turn to player 2 else set turn to player 1
-            turn = AI;
-
-        }
-
-        //if the board position wasn't valid tell the player 
-        else {
-            para.innerHTML = "Please pick a valid move";
-            para.style.display = "block";
-        }
-    }
-    //if mouseClicked isn't true
-    else {
+        //if turn is player 1 then set turn to player 2 else set turn to player 1
+        turn = AI;
         mouseClicked = false;
     }
+
+    //if the board position wasn't valid tell the player 
+    //if mouseClicked isn't true
+
 
     checkWinner();
 
@@ -510,17 +503,21 @@ function gameState() {
         var mousePos = getMousePos(canvas, evt);
 
         //mouseClick is put into a array where the first element is x axis and second is y. This should range from 500/500
-        mouseClick = [Math.floor(mousePos.x), Math.floor(mousePos.y)]
-        mouseClicked = true;
-
-        //if the winner is null then go through the player turn
-        if (winner === null) {
-            if (turn === player1) {
-                playerTurn();
-                if (winner === null) {
-                    aiTurn();
+        mouseClick = [Math.floor(mousePos.x), Math.floor(mousePos.y)];
+        if (board[boardSpace(0)][boardSpace(1)] === '' && board[boardSpace(0)][boardSpace(1)] !== 'O') {
+            //if the winner is null then go through the player turn
+            if (winner === null) {
+                if (turn === player1) {
+                    playerTurn();
+                    if (winner === null) {
+                        aiTurn();
+                    }
                 }
             }
+        }
+        else {
+            para.innerHTML = "Please pick a valid move";
+            para.style.display = "block";
 
         }
 
