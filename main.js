@@ -229,6 +229,8 @@ function winScreen() {
 //function to check the winner
 function checkWinner() {
 
+    winner = null;
+
     //will loop through each column and check if there is a winner
     for (let i = 0; i < 3; i++) {
         if (checkerFunc(board[i][0], board[i][1], board[i][2])) {
@@ -256,17 +258,17 @@ function checkWinner() {
     //checks if winner is equal to null and the length of the open array is 0 
     if (winner === null && open.length === 0) {
         //makes winner equal to tie
-        winner = tie;
+        return tie;
     }
 
     //else if winner = player1 or winner = player2 then return the winner
     else if (winner === player1 || winner === AI) {
-        winner = winner;
+        return winner;
     }
 
     //else winner is nothing
     else {
-        winner = null;
+        return null;
     }
 }
 
@@ -396,31 +398,34 @@ function position(posX, posY) {
 
 function aiTurn() {
     //set boolean for if the AI made a move
-    let moved = false;
+    //let moved = false;
 
+    bestMove();
     //loop through each element of the board
-    for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
+    // for (let i = 0; i < 3; i++) {
+    //     for (let j = 0; j < 3; j++) {
 
-            //the space is empty
-            if (board[i][j] === '') {
+    //     //     //the space is empty
+    //     //     if (board[i][j] === '') {
 
-                //set the board at this position equal to the turn, set moved to true, and change player turn
-                board[i][j] = turn;
-                moved = true;
+    //     //         //set the board at this position equal to the turn, set moved to true, and change player turn
+    //     //         board[i][j] = turn;
+    //     //         moved = true;
 
-                //remove the space from open spaces
-                open.splice(position(i, j), 1);
+    //     //         //remove the space from open spaces
+    //     //         open.splice(position(i, j), 1);
 
-                //draw board
-                draw();
-                //break
-                break;
-            }
-        }
-        //if moved was true break
-        if (moved) break;
-    }
+    //     //         //draw board
+    //     //         draw();
+    //     //         //break
+    //     //         break;
+    //     //     }
+    //     // }
+    //     //if moved was true break
+    //     if (moved) break;
+    // }
+
+    draw();
 
     //call checkWinner
     checkWinner();
@@ -510,7 +515,7 @@ function gameState() {
 function eventListner(evt) {
     //add event listener to canvas to get the mouse input
  
-
+        let wins = checkWinner();
         //gets teh mouse position in the canvas in relation to the event
         var mousePos = getMousePos(canvas, evt);
 
@@ -521,10 +526,11 @@ function eventListner(evt) {
         if (board[boardSpace(0)][boardSpace(1)] === '') {
 
             //if the winner is null then go through the player turn then if the winner is still null it will take aiTurn
-            if (winner === null) {
+            if (wins === null) {
                 if (turn === player1) {
                     playerTurn();
-                    if (winner === null) {
+                    wins = checkWinner();
+                    if (wins === null) {
                         aiTurn();
                     }
                 }

@@ -131,3 +131,42 @@ AI has a 5 in every move possible for every iteration of the game
 when the AI loses subtract a 1 for that move or AI wins add a 1 for that move and 0 if it ties
 when the AI loses all numbers for that move the AI cannot move there anymore
 then after so many iterations it will have the best moves possible
+
+function bestMove()
+//let bestScore = something low
+//let move;
+//for every row of the board
+    //for every column in the board
+        //if the board space is empty
+            //board[row][col] = ai's piece
+            //send in the current board state with piece in on of the open places
+            //let score = getBestMove(board, o's turn)
+            //board[row][col] = empty
+            //if score greater then highestPoints
+                //highestPoints = score
+                //make move an object, move = { i, j };
+
+
+function getBestMove(board, turn)
+//check for winner
+    //if checkWinner is true then return the winner
+//if it is o's turn
+    //let highestPoints = something high
+    //for every row of board
+        //for every col of board
+            //if board at [i][j] is empty 
+                //board[i][j] = ai
+                //let points = getBestMove(board, x's turn)
+                //board[i][j] = empty
+                //highestPoints = minimum of points vs. bestscore
+    //return highestPoints
+//else it is x's turn
+    //let highestPoints = something low
+    //for every row of board
+        //for every col of board
+            //if board at [i][j] is empty 
+                //board[i][j] = ai
+                //let points = getBestMove(board, o's turn)
+                //board[i][j] = empty
+                //highestPoints = maximum of points vs. bestscore
+    //return highestPoints
