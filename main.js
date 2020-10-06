@@ -117,7 +117,6 @@ function restart() {
 
 
     //set turn to player 1, winner to null, and open's length to 0
-    winner = null;
     open.length = 0;
 
     //Set color to background for starting player to show they are going
@@ -184,7 +183,7 @@ function checkerFunc(a, b, c) {
 function winScreen() {
 
     //if winner is equal to player 1 then add to player 1's wins call swapDisplay then change the text to match player 1 and set game state to 2 also sets next games starting player to player2
-    if (winner === player1) {
+    if (checkWinner() === player1) {
         xWins++;
         swapDisplay();
         // xWin.setAttribute('class', 'text-left col-3');
@@ -199,7 +198,7 @@ function winScreen() {
     }
 
     //else if the winner is equal to AI do the same as above besides changing player1 to AI also sets next games starting player to AI
-    else if (winner === AI) {
+    else if (checkWinner() === AI) {
         oWins++;
         swapDisplay();
         // xWin.setAttribute('class', 'text-left col-3');
@@ -262,13 +261,8 @@ function checkWinner() {
     }
 
     //else if winner = player1 or winner = player2 then return the winner
-    else if (winner === player1 || winner === AI) {
-        return winner;
-    }
-
-    //else winner is nothing
     else {
-        return null;
+        return winner;
     }
 }
 
@@ -427,15 +421,14 @@ function aiTurn() {
 
     draw();
 
-    //call checkWinner
-    checkWinner();
+
 
     //set State to 1 and changs turn to player1
     state = 1;
     turn = player1;
 
     //if winner is not null display winScreen
-    if (winner !== null) {
+    if (checkWinner() !== null) {
         winScreen();
     }
 }
@@ -476,12 +469,9 @@ function playerTurn() {
         //if turn is player 1 then set turn to player 2 else set turn to player 1
         turn = AI;
     }
-
-    checkWinner();
-
     state = 1;
 
-    if (winner !== null) {
+    if (checkWinner() !== null) {
         winScreen();
     }
 }
@@ -515,7 +505,6 @@ function gameState() {
 function eventListner(evt) {
     //add event listener to canvas to get the mouse input
  
-        let wins = checkWinner();
         //gets teh mouse position in the canvas in relation to the event
         var mousePos = getMousePos(canvas, evt);
 
@@ -526,11 +515,10 @@ function eventListner(evt) {
         if (board[boardSpace(0)][boardSpace(1)] === '') {
 
             //if the winner is null then go through the player turn then if the winner is still null it will take aiTurn
-            if (wins === null) {
+            if (checkWinner() === null) {
                 if (turn === player1) {
                     playerTurn();
-                    wins = checkWinner();
-                    if (wins === null) {
+                    if (checkWinner() === null) {
                         aiTurn();
                     }
                 }
