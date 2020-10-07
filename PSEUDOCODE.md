@@ -132,41 +132,27 @@ when the AI loses subtract a 1 for that move or AI wins add a 1 for that move an
 when the AI loses all numbers for that move the AI cannot move there anymore
 then after so many iterations it will have the best moves possible
 
-function bestMove()
-//let bestScore = something low
-//let move;
-//for every row of the board
-    //for every column in the board
-        //if the board space is empty
-            //board[row][col] = ai's piece
-            //send in the current board state with piece in on of the open places
-            //let score = getBestMove(board, o's turn)
-            //board[row][col] = empty
-            //if score greater then highestPoints
-                //highestPoints = score
-                //make move an object, move = { i, j };
 
+function getBestMove(board, player)
+//if player1 won
+    //return points -5
+//if ai won
+    //return points 5
+//else if neither won
+    //return 0
 
-function getBestMove(board, turn)
-//check for winner
-    //if checkWinner is true then return the winner
-//if it is o's turn
-    //let highestPoints = something high
-    //for every row of board
-        //for every col of board
-            //if board at [i][j] is empty 
-                //board[i][j] = ai
-                //let points = getBestMove(board, x's turn)
-                //board[i][j] = empty
-                //highestPoints = minimum of points vs. bestscore
-    //return highestPoints
-//else it is x's turn
-    //let highestPoints = something low
-    //for every row of board
-        //for every col of board
-            //if board at [i][j] is empty 
-                //board[i][j] = ai
-                //let points = getBestMove(board, o's turn)
-                //board[i][j] = empty
-                //highestPoints = maximum of points vs. bestscore
-    //return highestPoints
+//make an array to take moves
+//make an array to take scores
+//for each open spot   
+    //make the spot you are at as the current player
+    //if (player is human)
+        //result = getBestMove(board, ai);
+        //set the spot as open again
+    //if (player is ai)
+        //result = getBestMove(board,human);
+        //set spot as open again
+    //push to the array that takes moves
+    //push to the array that takes scores
+
+//loop through the array of moves
+    //if the score at the index is best for the move
